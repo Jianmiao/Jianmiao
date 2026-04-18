@@ -3,58 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 微信卡片强制配置 -->
     <title>我想对你说的话</title>
-
-    <!-- === 卡片显示设置 === -->
-    <!-- 这里的标题就是卡片上显示的大字 -->
+    <meta name="description" content="点开有惊喜">
     <meta property="og:title" content="我想对你说的话">
-    <!-- 这里的描述是卡片上的小字 -->
-    <meta property="og:description" content="点开这个链接，是我藏在心里很久的一句话...">
-    <!-- 这里的图片可以留空，或者放一张简单的纯色图，如果不填可能会显示默认链接图标 -->
-    <meta property="og:image" content=""> 
+    <meta property="og:description" content="点开有惊喜">
+    <meta property="og:image" content="https://picsum.photos/seed/msg/300/200">
     <meta property="og:type" content="website">
-
+    <meta name="twitter:card" content="summary_large_image">
     <style>
-        /* 页面样式：让文字居中显示，看起来舒服一点 */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .content {
-            font-size: 24px;
-            color: #333;
-            line-height: 1.6;
-            max-width: 80%;
-        }
-        /* 手机端字体稍微小一点 */
-        @media (max-width: 600px) {
-            .content {
-                font-size: 20px;
-            }
-        }
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {background:#fff;height:100vh;overflow:hidden;}
+        .modal {position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999;}
+        .modal-box {width:80%;max-width:300px;background:#fff;border-radius:12px;overflow:hidden;}
+        .modal-title {padding:20px 15px 10px;text-align:center;font-size:17px;font-weight:600;}
+        .modal-text {padding:0 15px 20px;text-align:center;font-size:15px;color:#666;}
+        .modal-btn {width:100%;padding:14px;border:none;background:#fff;color:#07c160;font-size:16px;font-weight:600;border-top:1px solid #eee;}
     </style>
 </head>
 <body>
-
-    <!-- === 这里修改你想显示的具体内容 === -->
-    <div class="content">
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <div class="modal-title">提示</div>
+            <div class="modal-text">请更新到微信最新版本查看此内容</div>
+            <button class="modal-btn" onclick="reopen()">确定</button>
+        </div>
     </div>
-
     <script>
-        // === 弹窗逻辑 ===
-        // 页面加载完成后执行
-        window.onload = function() {
-            // 这里修改弹窗里的文字
-            alert("请更新到微信最新版本查看");
-        };
+        function reopen(){
+            document.getElementById("modal").remove();
+            let m=document.createElement("div");
+            m.className="modal";
+            m.id="modal";
+            m.innerHTML=`<div class="modal-box"><div class="modal-title">提示</div><div class="modal-text">请更新到微信最新版本查看此内容</div><button class="modal-btn" onclick="reopen()">确定</button></div>`;
+            document.body.appendChild(m);
+        }
+        document.addEventListener("keydown",e=>e.key==="Escape"&&e.preventDefault());
     </script>
-
 </body>
 </html>

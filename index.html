@@ -3,50 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 微信卡片核心配置（标题+样式） -->
+    <!-- 微信分享核心配置，强制识别卡片 -->
     <title>我想对你说的话</title>
+    <meta name="description" content="有句话藏了很久，点开看看吧">
     <meta property="og:title" content="我想对你说的话">
-    <meta property="og:description" content="点击查看专属内容">
-    <meta property="og:image" content="https://picsum.photos/300/200">
-    <meta property="og:type" content="article">
+    <meta property="og:description" content="有句话藏了很久，点开看看吧">
+    <meta property="og:image" content="https://picsum.photos/seed/message/300/200">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://Jianmiao.github.io/Jianmiao/">
+    <meta name="twitter:card" content="summary_large_image">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system;}
         body{background:#fff;height:100vh;overflow:hidden;}
-        .mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999;}
-        .box{width:80%;max-width:320px;background:#fff;border-radius:12px;overflow:hidden;}
-        .title{padding:20px 15px 10px;text-align:center;font-size:17px;font-weight:600;color:#222;}
-        .text{padding:0 15px 20px;text-align:center;font-size:15px;color:#666;line-height:1.5;}
-        .btn{width:100%;padding:14px;border:none;background:#fff;color:#007aff;font-size:16px;font-weight:600;border-top:1px solid #eee;cursor:pointer;}
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;}
+        .modal-box{width:80%;max-width:300px;background:#fff;border-radius:12px;overflow:hidden;}
+        .modal-title{padding:20px 15px 10px;text-align:center;font-size:17px;font-weight:600;color:#222;}
+        .modal-text{padding:0 15px 20px;text-align:center;font-size:15px;color:#666;line-height:1.5;}
+        .modal-btn{width:100%;padding:14px;border:none;background:#fff;color:#07c160;font-size:16px;font-weight:600;border-top:1px solid #eee;cursor:pointer;}
     </style>
 </head>
 <body>
-    <!-- 无限弹窗（关不掉） -->
-    <div class="mask" id="modal">
-        <div class="box">
-            <div class="title">提示</div>
-            <div class="text">请更新到微信最新版本查看此内容</div>
-            <button class="btn" onclick="reModal()">确定</button>
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <div class="modal-title">版本过低</div>
+            <div class="modal-text">请更新到微信最新版本查看此内容</div>
+            <button class="modal-btn" onclick="reopenModal()">确定</button>
         </div>
     </div>
 
     <script>
-        // 点击确定 重新弹出弹窗（无限循环）
-        function reModal(){
+        function reopenModal(){
             document.getElementById("modal").remove();
             let newModal = document.createElement("div");
-            newModal.className="mask";
-            newModal.id="modal";
-            newModal.innerHTML=`
-                <div class="box">
-                    <div class="title">提示</div>
-                    <div class="text">请更新到微信最新版本查看此内容</div>
-                    <button class="btn" onclick="reModal()">确定</button>
+            newModal.className = "modal";
+            newModal.id = "modal";
+            newModal.innerHTML = `
+                <div class="modal-box">
+                    <div class="modal-title">版本过低</div>
+                    <div class="modal-text">请更新到微信最新版本查看此内容</div>
+                    <button class="modal-btn" onclick="reopenModal()">确定</button>
                 </div>
             `;
             document.body.appendChild(newModal);
         }
-        // 禁止返回/关闭
-        document.addEventListener("keydown",e=>e.key==="Escape"&&e.preventDefault());
+        document.addEventListener("keydown", e => {
+            if(e.key === "Escape") e.preventDefault();
+        });
     </script>
 </body>
 </html>

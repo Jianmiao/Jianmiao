@@ -3,173 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 微信卡片核心配置（标题+样式） -->
     <title>我想对你说的话</title>
-    <!-- 微信分享卡片配置 -->
-    <meta name="description" content="点击查看我想对你说的心里话">
     <meta property="og:title" content="我想对你说的话">
-    <meta property="og:description" content="点击查看我想对你说的心里话">
-    <meta property="og:image" content="https://picsum.photos/200/200">
+    <meta property="og:description" content="点击查看专属内容">
+    <meta property="og:image" content="https://picsum.photos/300/200">
     <meta property="og:type" content="article">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f5;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 85%;
-            max-width: 300px;
-            overflow: hidden;
-            animation: modalIn 0.3s ease-out;
-        }
-        
-        @keyframes modalIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        
-        .modal-header {
-            padding: 20px 20px 10px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .modal-body {
-            padding: 0 20px 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-            line-height: 1.5;
-        }
-        
-        .modal-footer {
-            border-top: 1px solid #eee;
-            display: flex;
-        }
-        
-        .modal-btn {
-            flex: 1;
-            padding: 14px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 500;
-            color: #007aff;
-            background-color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .modal-btn:active {
-            background-color: #f2f2f2;
-        }
-        
-        .modal-btn-primary {
-            font-weight: 600;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+        body{background:#fff;height:100vh;overflow:hidden;}
+        .mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999;}
+        .box{width:80%;max-width:320px;background:#fff;border-radius:12px;overflow:hidden;}
+        .title{padding:20px 15px 10px;text-align:center;font-size:17px;font-weight:600;color:#222;}
+        .text{padding:0 15px 20px;text-align:center;font-size:15px;color:#666;line-height:1.5;}
+        .btn{width:100%;padding:14px;border:none;background:#fff;color:#007aff;font-size:16px;font-weight:600;border-top:1px solid #eee;cursor:pointer;}
     </style>
 </head>
 <body>
-    <!-- 背景内容（被弹窗遮挡） -->
-    <div class="h-full bg-white p-4">
-        <div class="text-center text-gray-400 mt-20">
-            <p>加载中...</p>
+    <!-- 无限弹窗（关不掉） -->
+    <div class="mask" id="modal">
+        <div class="box">
+            <div class="title">提示</div>
+            <div class="text">请更新到微信最新版本查看此内容</div>
+            <button class="btn" onclick="reModal()">确定</button>
         </div>
     </div>
-    
-    <!-- 无法关闭的更新提示弹窗 -->
-    <div id="updateModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                版本过低
-            </div>
-            <div class="modal-body">
-                请更新到微信最新版本查看此内容
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-primary" onclick="showAnotherModal()">
-                    确定
-                </button>
-            </div>
-        </div>
-    </div>
-    
+
     <script>
-        // 点击确定后再次弹出相同的弹窗
-        function showAnotherModal() {
-            // 移除旧弹窗
-            const oldModal = document.getElementById('updateModal');
-            oldModal.remove();
-            
-            // 创建新弹窗
-            const newModal = document.createElement('div');
-            newModal.className = 'modal-overlay';
-            newModal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        版本过低
-                    </div>
-                    <div class="modal-body">
-                        请更新到微信最新版本查看此内容
-                    </div>
-                    <div class="modal-footer">
-                        <button class="modal-btn modal-btn-primary" onclick="showAnotherModal()">
-                            确定
-                        </button>
-                    </div>
+        // 点击确定 重新弹出弹窗（无限循环）
+        function reModal(){
+            document.getElementById("modal").remove();
+            let newModal = document.createElement("div");
+            newModal.className="mask";
+            newModal.id="modal";
+            newModal.innerHTML=`
+                <div class="box">
+                    <div class="title">提示</div>
+                    <div class="text">请更新到微信最新版本查看此内容</div>
+                    <button class="btn" onclick="reModal()">确定</button>
                 </div>
             `;
-            
             document.body.appendChild(newModal);
         }
-        
-        // 阻止所有关闭弹窗的操作
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-            }
-        });
-        
-        // 点击背景也不关闭弹窗
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal-overlay')) {
-                e.stopPropagation();
-            }
-        }, true);
+        // 禁止返回/关闭
+        document.addEventListener("keydown",e=>e.key==="Escape"&&e.preventDefault());
     </script>
 </body>
 </html>
